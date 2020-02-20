@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title> SELL Page </title>
+		<meta charset=utf-8 />
+		<link rel="stylesheet" href="sell.css" />
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+		<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+	</head>
+	
+	<body style="background-image:linear-gradient( #498fd4, #3d79b4,#336699, #3d79b4, #498fd4);">
+		<form id="form">
+			<div class="detail_container">			
+				<center>		
+				<p > 
+					<b>Account &nbsp;:&nbsp;&nbsp;</b> 
+					<label style="background-image: linear-gradient(to bottom,rgb(255, 94, 0),orange);font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" id="user_details">
+					</label>
+				</p> <br>
+				<b>Select Company from following :</b>
+				<Select class="dropdown" id="cmp_dropdown">
+					<option value="default">Select Comapny from following :</option>
+					<option value="Housing Development Finance Corporation Ltd">Housing Development Finance Corporation Ltd.</option>
+					<option value="Cipla">Cipla</option>
+					<option value="State Bank Of India">State Bank Of India</option>
+					<option value="Dr Reddys Laboratories Ltd">Dr. Reddys Laboratories Ltd.</option>
+					<option value="HDFC Bank Ltd">HDFC Bank Ltd.</option>
+					<option value="Hero MotoCorp Ltd">Hero MotoCorp Ltd.</option>
+					<option value="Infosys Ltd">Infosys Ltd.</option>
+					<option value="Kotak Mahindra Bank Ltd">Kotak Mahindra Bank Ltd.</option>
+					<option value="Lupin">Lupin</option>
+					<option value="Oil & Natural Gas Corporation Ltd">Oil & Natural Gas Corporation Ltd.</option>
+					<option value="Reliance Industries Ltd">Reliance Industries Ltd.	</option>
+					<option value="Tata Steel Ltd">Tata Steel Ltd.</option>
+					<option value="Larsen & Toubro Ltd">Larsen & Toubro Ltd.</option>
+					<option value="Mahindra & Mahindra Ltd">Mahindra & Mahindra Ltd.</option>
+					<option value="Tata Motors Ltd">Tata Motors Ltd.</option>
+					<option value="Hindustan Unilever Ltd">Hindustan Unilever Ltd.</option>
+					<option value="Asian Paints Ltd">Asian Paints Ltd.</option>
+					<option value="ITC Ltd">ITC Ltd.</option>
+					<option value="Wipro Ltd">Wipro Ltd.</option>
+					<option value="Sun Pharmaceutical Industries Ltd">Sun Pharmaceutical Industries Ltd.</option>
+					<option value="ICICI Bank Ltd">ICICI Bank Ltd.</option>
+					<option value="Axis Bank Ltd">Axis Bank Ltd.</option>
+					<option value="Bharti Airtel Ltd">Bharti Airtel Ltd.</option>
+					<option value="Maruti Suzuki India Ltd">Maruti Suzuki India Ltd.</option>
+					<option value="Tata Consultancy Services Ltd">Tata Consultancy Services Ltd.</option>
+					<option value="NTPC Ltd">NTPC Ltd.</option>
+					<option value="Power Grid Corporation Of India Ltd">Power Grid Corporation Of India Ltd.</option>
+					<option value="Adani Ports and Special Economic Zone Ltd">Adani Ports and Special Economic Zone Ltd.</option>
+					<option value="Bajaj Auto Ltd">Bajaj Auto Ltd.</option>
+					<option value="Coal India Ltd">Coal India Ltd.</option>						
+				</Select><br><br>
+				</center>
+				<div class="buy_details" style="position: absolute;left:38%">
+					<b>Sell Date 			:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+											<input type="date" id="sell_date"> <p></p><br>
+
+					<b>Sell Price 			:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+											<input type="number" id="sell_price"> <p></p><br>
+
+					<b>Brokrage				:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+											<input type="number" id="brokrage" onmouseover="brokragepopup()" onmouseout="clearpop()">
+												<p id="brokragepopup" style="font-size: 13px;color: red;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: bold"></p><br>
+
+					<b>Other Taxes			:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+											<input type="number" id="ot" onmouseover="otpopup()" onmouseout="clearpop()">
+												<p id="otpopup" style="font-size: 13px;color: red;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: bold"></p><br>
+											
+					<b>Quantity 			:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+												<input type="number" id="quan"> 
+					<br>			
+				</div>			
+			</div>
+			<br> <br>
+			<div class="heading" style="position: absolute;left:38%;top:63%;">
+					<div class="text_container">
+						<p align="center">
+							<h3 class="text" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size: 25px">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELL STOCKS
+							</h3>
+						</p>
+					</div>
+					<div class="save_btn" style="position:absolute;left:0%;">
+						<button type="button" id="sell" style="background-image: linear-gradient(to bottom,rgb(255, 81, 0),rgb(255, 145, 0),orange)">
+							SELL
+						</button>
+					</div>
+					<div class= "reset_btn" style="position:absolute;left:70%">
+						<button id="Reset" type="reset" style="background-image: linear-gradient(to bottom,rgb(255, 81, 0),rgb(255, 145, 0),orange)">
+							RESET
+						</button>
+					</div>
+			</div>
+			<br> <br>
+			<button id="dashboard" formaction="index.html" style="position: absolute;left:43.15%;top:84%;background-image: linear-gradient(to bottom,rgb(255, 81, 0),rgb(255, 145, 0),orange);">
+				DASHBOARD
+			</button>
+		</form>
+    </body>
+    <script>
+       //========================================================================
+		// Your web app's Firebase configuration
+		var firebaseConfig = {
+			apiKey: "AIzaSyBq4HoajN_88rmVgbqBfJ3xWgbmc6t4zG4",
+			authDomain: "portfolio-37e60.firebaseapp.com",
+			databaseURL: "https://portfolio-37e60.firebaseio.com",
+			projectId: "portfolio-37e60",
+			storageBucket: "portfolio-37e60.appspot.com",
+			messagingSenderId: "202727189125",
+			appId: "1:202727189125:web:e6c82b94bf7edfe9"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+
+        $(document).ready(function(e){
+            firebase.auth().onAuthStateChanged(function(user) {
+                console.log("Auth State Changed");                
+                if (user) 
+                {	
+                    var user = firebase.auth().currentUser;                    
+                    if (user != null) {
+                        email = user.email;
+                        emailVerified = user.emailVerified;                    
+                        
+                        var userID = firebase.auth().currentUser.uid;
+                        console.log(userID);
+                        var rootref =firebase.database().ref("users").child(userID);
+                        
+                        rootref.once("value").then(function(snapshot){
+                            var name = snapshot.child("name").val();                            
+                            console.log(name);
+                            $('#user_details').append(name);
+
+                        });
+                                                
+                        // The user's ID, unique to the Firebase project. Do NOT use
+                        // this value to authenticate with your backend server, if
+                        // you have one. Use User.getToken() instead.
+
+                        //$('#user_details').append(email);
+                    }
+                }
+                else 
+                {
+                   console.log("user is null");
+				   window.alert("Login First"); 
+                   window.open("login.html","_self");
+                }
+            });
+        })
+
+        //sell onclick listener
+        $('#sell').click(function(){
+            //conso.log('sell btn clicked');
+            var cmpName=$('#cmp_dropdown option:selected').val();
+            var sellDate=$('#sell_date').val();
+            var sellPrice = $("#sell_price").val();
+            var quantity=$('#quan').val();
+            var quantityN=parseInt($('#quan').val()) 
+            var brokrage=$('#brokrage').val();
+            var brokrageN=parseFloat($('#brokrage').val())
+            var ot=$('#ot').val();
+            var otN=parseFloat($('#ot').val());
+            var netsellprice=parseFloat(sellPrice-brokrageN-otN);
+            var netsellpriceS=netsellprice.toString();
+            //conso.log(sellDate,typeof(sellDate))
+            //for checking whether the input by user is correct or not
+			if(cmpName == "default"){
+				window.alert("Select Comapny Name...");
+			}	
+            else if(sellDate==""){
+                window.alert('Enter valid date...');
+            }
+			else if ( netsellprice <= 0 || netsellpriceS == ""){
+				
+				window.alert("Enter Valid Sell Price...");
+			}
+			else if(brokrage=="" || Number.isNaN(brokrageN) || brokrageN<0){
+				window.alert("Enter valid brokrage...");
+			}
+			else if(ot=="" || Number.isNaN(otN) || otN<0){
+				window.alert("Enter valid Other taxes...");
+			}
+            else if (quantityN <= 0 || quantity == ""){					
+				window.alert("Enter Valid Quantity...");
+			}
+			//user has entered corrrect and valid input 
+			else{
+                var today=new Date();
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+				//conso.log(date,typeof(date));
+				if (quantityN > 0 || quantity != ""){
+					var n=parseInt("-1");
+					n=quantity.indexOf(".");
+					//conso.log(n)
+					if(parseInt(n)>-1){
+						window.alert("quantity must be integer...");
+						return;
+					}	                    
+					if(convertdates(sellDate)>convertdates(date)){
+						window.alert('You cannot sell stocks at day which is in future');
+						return;
+					}
+					else{
+						var user = firebase.auth().currentUser;
+						firebase.auth().onAuthStateChanged(function(user){
+							if(user!=null){
+								var userID = user.uid;
+								console.log(user)
+								//creating "ROOTREF" for traversing to required note
+								var rootRef = firebase.database().ref().child("users").child(userID).child("stocks");
+								//creating a snapshot for retreiving current values present in database	
+								rootRef.once("value").then(function(snapshot){
+									var hascmplist=snapshot.hasChild("cmplist");
+									var hastqty=snapshot.child(cmpName).hasChild("TotalQty");
+									var hasdatelist=snapshot.child(cmpName).hasChild("datelist");	
+									var hascmp=snapshot.hasChild(cmpName);
+									//conso.log("hascompanylist:"+hascmplist,"\nhas total qyantity:"+hastqty,"\nhasdatelist:"+hasdatelist+"\nhascompany"+hascmp);
+									if(hascmplist && hastqty && hasdatelist && hascmp){
+										var TotalQty =  parseInt(snapshot.child(cmpName).child("TotalQty").child("TotalQty").val());	
+										//conso.log(TotalQty);
+										if(quantityN>TotalQty){
+											window.alert("You don't have "+quantity+" stocks of "+cmpName);
+										}
+										else if(quantity<=TotalQty)
+										{
+											var datelisto = snapshot.child(cmpName).child("datelist").child("datelist").val();
+											//conso.log(datelisto);
+											var datelista = datelisto.split(",");
+											//conso.log(datelista);
+											var datelists = datelista.sort();
+											//conso.log(datelists);
+											var currentdate=datelists[1];
+											//conso.log(currentdate);
+											var currentQty=snapshot.child(cmpName).child(currentdate).child("Quantity").val();
+											var currentprice=snapshot.child(cmpName).child(currentdate).child("Investment Price").val();
+											var unitprice=snapshot.child(cmpName).child(currentdate).child("Unit Price").val();
+											//conso.log(currentQty,currentprice,unitprice); 
+											currentdateD=convertdates(currentdate);
+											//conso.log(typeof(currentdateD));
+											sellDateD=convertdates(sellDate);
+											//conso.log(typeof(sellDateD));
+											if(currentdateD<=sellDateD){
+												console.log('valid dates');
+												if(currentQty>quantityN){
+													console.log('less than current update node');
+													EditdateL(cmpName,currentdate,currentQty,currentprice,quantityN,sellDate,netsellprice,unitprice,TotalQty);
+												}
+												else if(currentQty==quantityN){
+													console.log('Equal quantity delete node');
+													EditdateE(cmpName,currentdate,currentQty,currentprice,quantityN,sellDate,netsellprice,unitprice,TotalQty)
+												}
+												else if(currentQty<quantityN){
+													console.log('Greater than current delete and update node');
+													window.alert('You cannot sell '+quantityN+' of '+cmpName+' \nAs you have purchased them on different dates');
+													window.alert('You can sell upto '+currentQty);
+												}
+											}
+											else{
+												window.alert('You cannot sell stocks berfore purchasing...');
+											}
+										}
+									}	
+									else if(!hascmp){
+										window.alert('you don\'t have any stocks of '+cmpName);
+										return;
+									}
+									else if(!hascmplist||!hasdatelist||!hastqty){
+										window.alert('database error');
+										return;
+									}
+								});
+
+							}
+							else{
+								console.log('user is null')
+							}
+						});
+					}
+				}
+            }
+        })
+		
+		function EditdateL(cmpName,currentdate,currentQty,currentprice,quantityN,sellDate,netsellprice,unitprice,TotalQty){
+			//conso.log(cmpName);
+			//conso.log(currentdate);
+			//conso.log(currentQty);
+			//conso.log(currentprice);
+			//conso.log(quantityN);
+			//conso.log(sellDate);
+			//conso.log(netsellprice);
+			//conso.log(unitprice);
+			var user = firebase.auth().currentUser;
+			if(user){
+				var userID = firebase.auth().currentUser.uid;
+				var newQty=parseInt(currentQty)-parseInt(quantityN);				
+				var newinstprice=unitprice*newQty;
+				var profit=	netsellprice-(unitprice*quantityN);
+				var SUnitprice=parseFloat(netsellprice)/parseFloat(quantityN);
+				//conso.log(newQty,newinstprice,profit);								
+				//creating "ROOTREF" for traversing to required note
+				var rootRef = firebase.database().ref().child("users").child(userID).child("stocks");
+				var newTotalQty={
+					"TotalQty":(parseInt(TotalQty)-parseInt(quantityN)).toString()
+				}
+				rootRef.child(cmpName).child("TotalQty").set(newTotalQty,function(error){
+					if(error){
+						var errorcode=error.code;
+						var errorMessage=error.message;
+						//conso.log(error.code);
+						//conso.log(error.Message);
+
+						window.alert("Message:"+errorMessage);					
+					}
+					else{
+						console.log("Total quantity updated");
+					}
+				});
+				var date = rootRef.child(cmpName).child(currentdate);
+				var cmpData = {								
+					"Investment Price": newinstprice.toString(),
+					"Quantity": newQty.toString(),
+					"Unit Price":unitprice.toString()
+				}; 
+				date.set(cmpData,function(error){
+					if(error){
+						var errorcode=error.code;
+						var errorMessage=error.message;
+						//conso.log(error.code);
+						//conso.log(error.Message);
+
+						window.alert("Message:"+errorMessage);					
+					}
+					else{
+						console.log("database entry updated");
+					}
+				});
+				sellDateD=convertdates(sellDate);
+				buyDateD=convertdates(currentdate);
+				sellyear=sellDateD.getFullYear();
+				buyyear=buyDateD.getFullYear();
+				console.log('Sell Date D : '+sellDateD);
+				console.log('buy Date D : '+buyDateD);
+				console.log('Sell Year : '+sellyear);
+				console.log('Buy Year : '+buyyear);
+				var yeardiff=parseInt(sellyear-buyyear);
+				if(yeardiff==parseInt(0)){
+					console.log('Short Term');
+					rootRef.once("value").then(function(snapshot){					
+						var hasdate=snapshot.child(cmpName).child("Sell Data").child("ShortTerm").hasChild(sellDate);
+						//conso.log(hasdate);
+						if(!hasdate){					
+							var selldataN=rootRef.child(cmpName).child("Sell Data").child("ShortTerm");
+							var date=selldataN.child(sellDate);
+							var selldata={
+								"Profit": profit.toString(),
+								"Sell Qty":quantityN.toString(),
+								"Sell Price":netsellprice.toString(),
+								"Unit price":SUnitprice.toString()
+							}
+							date.set(selldata,function(error){
+								if(error){
+									var errorcode=error.code;
+									var errorMessage=error.message;
+									//conso.log(error.code);
+									//conso.log(error.Message);
+
+									window.alert("Message:"+errorMessage);					
+								}
+								else{
+									console.log("database entry of sell created");
+									window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = ShortTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+									document.getElementById("form").reset();
+								}
+							});
+						}
+						else if(hasdate){
+							var OProfit=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Profit").val());
+							var OSellQty=parseInt(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Sell Qty").val());
+							var OSellPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Sell Price").val());
+							var OUnitPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Unit price").val());
+							//conso.log(OProfit,OSellQty,OSellPrice,OUnitPrice);
+							var newProfit=parseFloat(OProfit)+parseFloat(profit);
+							var newSellQty=parseInt(OSellQty)+parseInt(quantityN);
+							var newsellPrice=parseFloat(OSellPrice)+parseFloat(netsellprice);
+							var newunitprice=parseFloat(newsellPrice)/parseInt(newSellQty);
+							var selldataN=rootRef.child(cmpName).child("Sell Data");
+							var date=selldataN.child(sellDate);
+							var selldata={
+								"Profit": newProfit.toString(),
+								"Sell Qty":newSellQty.toString(),
+								"Sell Price":newsellPrice.toString(),
+								"Unit price":newunitprice.toString()
+							}
+							date.set(selldata,function(error){
+								if(error){
+									var errorcode=error.code;
+									var errorMessage=error.message;
+									//conso.log(error.code);
+									//conso.log(error.Message);
+
+									window.alert("Message:"+errorMessage);					
+								}
+								else{
+									console.log("database entry of sell updated");
+									window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = ShortTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+									document.getElementById("form").reset();
+								}
+							});
+							
+						}
+					});
+
+				}
+				else if(yeardiff>0){
+					console.log('Long Term');
+					rootRef.once("value").then(function(snapshot){					
+						var hasdate=snapshot.child(cmpName).child("Sell Data").child("LongTerm").hasChild(sellDate);
+						//conso.log(hasdate);
+						if(!hasdate){					
+							var selldataN=rootRef.child(cmpName).child("Sell Data").child("LongTerm");
+							var date=selldataN.child(sellDate);
+							var selldata={
+								"Profit": profit.toString(),
+								"Sell Qty":quantityN.toString(),
+								"Sell Price":netsellprice.toString(),
+								"Unit price":SUnitprice.toString()
+							}
+							date.set(selldata,function(error){
+								if(error){
+									var errorcode=error.code;
+									var errorMessage=error.message;
+									//conso.log(error.code);
+									//conso.log(error.Message);
+
+									window.alert("Message:"+errorMessage);					
+								}
+								else{
+									console.log("database entry of sell created");
+									window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = LongTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+									document.getElementById("form").reset();
+								}
+							});
+						}
+						else if(hasdate){
+							var OProfit=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Profit").val());
+							var OSellQty=parseInt(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Sell Qty").val());
+							var OSellPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Sell Price").val());
+							var OUnitPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Unit price").val());
+							//conso.log(OProfit,OSellQty,OSellPrice,OUnitPrice);
+							var newProfit=parseFloat(OProfit)+parseFloat(profit);
+							var newSellQty=parseInt(OSellQty)+parseInt(quantityN);
+							var newsellPrice=parseFloat(OSellPrice)+parseFloat(netsellprice);
+							var newunitprice=parseFloat(newsellPrice)/parseInt(newSellQty);
+							var selldataN=rootRef.child(cmpName).child("Sell Data").child("LongTerm");
+							var date=selldataN.child(sellDate);
+							var selldata={
+								"Profit": newProfit.toString(),
+								"Sell Qty":newSellQty.toString(),
+								"Sell Price":newsellPrice.toString(),
+								"Unit price":newunitprice.toString()
+							}
+							date.set(selldata,function(error){
+								if(error){
+									var errorcode=error.code;
+									var errorMessage=error.message;
+									//conso.log(error.code);
+									//conso.log(error.Message);
+
+									window.alert("Message:"+errorMessage);					
+								}
+								else{
+									console.log("database entry of sell updated");
+									window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = LongTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+									document.getElementById("form").reset();
+								}
+							});
+							
+						}
+					});
+				}
+
+				/*rootRef.once("value").then(function(snapshot){					
+					var hasdate=snapshot.child(cmpName).child("Sell Data").hasChild(sellDate);
+					console.log(hasdate);
+					if(!hasdate){					
+						var selldataN=rootRef.child(cmpName).child("Sell Data");
+						var date=selldataN.child(sellDate);
+						var selldata={
+							"Profit": profit.toString(),
+							"Sell Qty":quantityN.toString(),
+							"Sell Price":netsellprice.toString(),
+							"Unit price":SUnitprice.toString()
+						}
+						date.set(selldata,function(error){
+							if(error){
+								var errorcode=error.code;
+								var errorMessage=error.message;
+								//conso.log(error.code);
+								//conso.log(error.Message);
+
+								window.alert("Message:"+errorMessage);					
+							}
+							else{
+								//conso.log("database entry of sell created");
+							}
+						});
+					}
+					else if(hasdate){
+						var OProfit=parseFloat(snapshot.child(cmpName).child("Sell Data").child(sellDate).child("Profit").val());
+						var OSellQty=parseInt(snapshot.child(cmpName).child("Sell Data").child(sellDate).child("Sell Qty").val());
+						var OSellPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child(sellDate).child("Sell Price").val());
+						var OUnitPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child(sellDate).child("Unit price").val());
+						//conso.log(OProfit,OSellQty,OSellPrice,OUnitPrice);
+						var newProfit=parseFloat(OProfit)+parseFloat(profit);
+						var newSellQty=parseInt(OSellQty)+parseInt(quantityN);
+						var newsellPrice=parseFloat(OSellPrice)+parseFloat(netsellprice);
+						var newunitprice=parseFloat(netsellprice)/parseInt(newSellQty);
+						var selldataN=rootRef.child(cmpName).child("Sell Data");
+						var date=selldataN.child(sellDate);
+						var selldata={
+							"Profit": newProfit.toString(),
+							"Sell Qty":newSellQty.toString(),
+							"Sell Price":newsellPrice.toString(),
+							"Unit price":newunitprice.toString()
+						}
+						date.set(selldata,function(error){
+							if(error){
+								var errorcode=error.code;
+								var errorMessage=error.message;
+								//console.log(error.code);
+								//console.log(error.Message);
+
+								window.alert("Message:"+errorMessage);					
+							}
+							else{
+								//console.log("database entry of sell updated");
+							}
+						});
+						
+					}
+				});*/
+			}
+		}
+
+		function EditdateE(cmpName,currentdate,currentQty,currentprice,quantityN,sellDate,netsellprice,unitprice,TotalQty){
+			//console.log(cmpName);
+			//console.log(currentdate);
+			//console.log(currentQty);
+			//console.log(currentprice);
+			//console.log(quantityN);
+			//console.log(sellDate);
+			//console.log(netsellprice);
+			//console.log(unitprice);
+			var user = firebase.auth().currentUser;
+			if(user){
+				var userID = firebase.auth().currentUser.uid;
+				if(parseInt(currentQty)==parseInt(quantityN)){
+					var profit=	netsellprice-(unitprice*quantityN);
+					var SUnitprice=parseFloat(netsellprice)/parseFloat(quantityN);
+					//console.log(SUnitprice,profit);
+					var rootRef = firebase.database().ref().child("users").child(userID).child("stocks");
+					var newTotalQty={
+						"TotalQty":parseInt(TotalQty)-parseInt(quantityN)
+					}
+					rootRef.child(cmpName).child("TotalQty").set(newTotalQty,function(error){
+						if(error){
+							var errorcode=error.code;
+							var errorMessage=error.message;
+							//console.log(error.code);
+							//console.log(error.Message);
+
+							window.alert("Message:"+errorMessage);					
+						}
+						else{
+							console.log("Total quantity updated");
+						}
+					});
+					var date = rootRef.child(cmpName).child(currentdate);
+					date.remove();
+					sellDateD=convertdates(sellDate);
+					buyDateD=convertdates(currentdate);
+					sellyear=sellDateD.getFullYear();
+					buyyear=buyDateD.getFullYear();
+					console.log('Sell Date D : '+sellDateD);
+					console.log('buy Date D : '+buyDateD);
+					console.log('Sell Year : '+sellyear);
+					console.log('Buy Year : '+buyyear);
+					var yeardiff=parseInt(sellyear-buyyear);
+					if(yeardiff==parseInt(0)){
+						console.log('Short Term');
+						rootRef.once("value").then(function(snapshot){
+							var hasdatelist=snapshot.child(cmpName).hasChild("datelist");
+							//console.log(hasdatelist)
+							if(hasdatelist)
+							{
+								var datelisto = snapshot.child(cmpName).child("datelist").child("datelist").val();
+								//console.log(datelisto);
+								var datelists=datelisto.toString();
+								var newdatelist=datelists.replace(currentdate+",",'');
+								////console.log(newdatelist);
+								rootRef.child(cmpName).child("datelist").set({
+									"datelist":newdatelist	
+									});
+								//console.log(newdatelist)
+								console.log("datelist updated");
+								var hasdate=snapshot.child(cmpName).child("Sell Data").child("ShortTerm").hasChild(sellDate);
+								//console.log(hasdate);
+								if(!hasdate){					
+									var selldataN=rootRef.child(cmpName).child("Sell Data").child("ShortTerm");
+									var date=selldataN.child(sellDate);
+									var selldata={
+										"Profit": profit.toString(),
+										"Sell Qty":quantityN.toString(),
+										"Sell Price":netsellprice.toString(),
+										"Unit price":SUnitprice.toString()
+									}
+									date.set(selldata,function(error){
+										if(error){
+											var errorcode=error.code;
+											var errorMessage=error.message;
+											//console.log(error.code);
+											//console.log(error.Message);
+
+											window.alert("Message:"+errorMessage);					
+										}
+										else{
+											console.log("database entry of sell created");
+											window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = ShortTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+											document.getElementById("form").reset();
+										}
+									});
+								}
+								else if(hasdate){
+									var OProfit=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Profit").val());
+									var OSellQty=parseInt(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Sell Qty").val());
+									var OSellPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Sell Price").val());
+									var OUnitPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("ShortTerm").child(sellDate).child("Unit price").val());
+									//console.log(OProfit,OSellQty,OSellPrice,OUnitPrice);
+									var newProfit=parseFloat(OProfit)+parseFloat(profit);
+									var newSellQty=parseInt(OSellQty)+parseInt(quantityN);
+									var newsellPrice=parseFloat(OSellPrice)+parseFloat(netsellprice);
+									var newunitprice=parseFloat(newsellPrice)/parseInt(newSellQty);
+									var selldataN=rootRef.child(cmpName).child("Sell Data").child("ShortTerm");
+									var date=selldataN.child(sellDate);
+									var selldata={
+										"Profit": newProfit.toString(),
+										"Sell Qty":newSellQty.toString(),
+										"Sell Price":newsellPrice.toString(),
+										"Unit price":newunitprice.toString()
+									}
+									date.set(selldata,function(error){
+										if(error){
+											var errorcode=error.code;
+											var errorMessage=error.message;
+											//console.log(error.code);
+											//console.log(error.Message);
+
+											window.alert("Message:"+errorMessage);					
+										}
+										else{
+											console.log("database entry of sell updated");
+											window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = ShortTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+											document.getElementById("form").reset();
+										}
+									});
+								}
+								
+							}
+						});
+					}				
+					else if(yeardiff>0){
+						console.log('Long Term');
+						rootRef.once("value").then(function(snapshot){
+							var hasdatelist=snapshot.child(cmpName).hasChild("datelist");
+							//console.log(hasdatelist)
+							if(hasdatelist)
+							{
+								var datelisto = snapshot.child(cmpName).child("datelist").child("datelist").val();
+								//console.log(datelisto);
+								var datelists=datelisto.toString();
+								var newdatelist=datelists.replace(currentdate+",",'');
+								////console.log(newdatelist);
+								rootRef.child(cmpName).child("datelist").set({
+									"datelist":newdatelist	
+									});
+								//console.log(newdatelist)
+								console.log("datelist updated");
+								var hasdate=snapshot.child(cmpName).child("Sell Data").child("LongTerm").hasChild(sellDate);
+								//console.log(hasdate);
+								if(!hasdate){					
+									var selldataN=rootRef.child(cmpName).child("Sell Data").child("LongTerm");
+									var date=selldataN.child(sellDate);
+									var selldata={
+										"Profit": profit.toString(),
+										"Sell Qty":quantityN.toString(),
+										"Sell Price":netsellprice.toString(),
+										"Unit price":SUnitprice.toString()
+									}
+									date.set(selldata,function(error){
+										if(error){
+											var errorcode=error.code;
+											var errorMessage=error.message;
+											//console.log(error.code);
+											//console.log(error.Message);
+
+											window.alert("Message:"+errorMessage);					
+										}
+										else{
+											console.log("database entry of sell created");
+											window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = LongTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+											document.getElementById("form").reset();
+										}
+									});
+								}
+								else if(hasdate){
+									var OProfit=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Profit").val());
+									var OSellQty=parseInt(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Sell Qty").val());
+									var OSellPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Sell Price").val());
+									var OUnitPrice=parseFloat(snapshot.child(cmpName).child("Sell Data").child("LongTerm").child(sellDate).child("Unit price").val());
+									//console.log(OProfit,OSellQty,OSellPrice,OUnitPrice);
+									var newProfit=parseFloat(OProfit)+parseFloat(profit);
+									var newSellQty=parseInt(OSellQty)+parseInt(quantityN);
+									var newsellPrice=parseFloat(OSellPrice)+parseFloat(netsellprice);
+									var newunitprice=parseFloat(newsellPrice)/parseInt(newSellQty);
+									var selldataN=rootRef.child(cmpName).child("Sell Data").child("LongTerm");
+									var date=selldataN.child(sellDate);
+									var selldata={
+										"Profit": newProfit.toString(),
+										"Sell Qty":newSellQty.toString(),
+										"Sell Price":newsellPrice.toString(),
+										"Unit price":newunitprice.toString()
+									}
+									//console.log(selldata);
+									date.set(selldata,function(error){
+										if(error){
+											var errorcode=error.code;
+											var errorMessage=error.message;
+											//console.log(error.code);
+											//console.log(error.Message);
+
+											window.alert("Message:"+errorMessage);					
+										}
+										else{
+											console.log("database entry of sell updated");
+											window.alert(quantityN+" stocks of "+cmpName+" sold successfully\nGain Type = LongTerm\n\nSUMMARY:\nProfit : "+profit+"\nUnit Price (SELL) : "+SUnitprice+"\nYou have "+(parseInt(TotalQty)-parseInt(quantityN))+" stocks in your Portfolio remaining");
+											document.getElementById("form").reset();
+										}
+									});
+								}
+								
+							}
+						});
+					}
+				}
+			}
+		}
+
+
+		function convertdates(date){
+			var parts =date.split('-');
+			// Please pay attention to the month (parts[1]); JavaScript counts months from 0:
+			var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
+			//console.log(mydate.toDateString());
+			return mydate;
+		}
+
+        function brokragepopup(){
+			document.getElementById("brokragepopup").innerHTML="Enter the brokrage i.e charges charged by stock broker(can be found on contract note)";
+		}
+
+		function otpopup(){
+			document.getElementById("otpopup").innerHTML="Enter other taxes such as STT,ETC(can be found on contract note)";
+		}
+
+		function clearpop(){
+			document.getElementById("brokragepopup").innerHTML="";
+			document.getElementById("otpopup").innerHTML="";
+		}
+    </script>
+</html>

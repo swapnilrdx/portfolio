@@ -1,0 +1,329 @@
+<html>
+    <head>
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="dashboard.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+  	    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+        <script>
+        function HandleBackFunctionality()
+        {
+            if(window.event)
+            {
+                if(window.event.clientX < 40 && window.event.clientY < 0)
+                {
+                    alert("Browser back button is clicked...");
+                }
+                else
+                {
+                    alert("Browser refresh button is clicked...");
+                }
+            }
+            else
+            {
+                if(event.currentTarget.performance.navigation.type == 1)
+                {
+                    alert("Browser refresh button is clicked...");
+                }
+                if(event.currentTarget.performance.navigation.type == 2)
+                {
+                    alert("Browser back button is clicked...");
+                }
+            }
+        }
+        </script>
+    </head>
+
+    <body bgcolor="#465270" onbeforeunload="HandleBackFunctionality()">
+        <div class ="outer">
+
+            <!--heading section-->
+            <div class="heading">
+                <div class="logo">
+                    <img src="logo2.png" style="width: 68px; height: 95px; position: relative; left: 5%;">
+                </div>
+                <div class="ttle">
+                    <div class="ttlbck">
+                        PORTFOLIO SUMMARY
+                    </div>
+                </div>
+                <div class="userdetails">
+                    <table class="userdetailstable">
+                        <tr><td><p id="user_details" class="user_details"></h6></td></tr>
+                        <tr><td><p id="user_details_mail" style="text-transform:lowercase;" class="user_details_mail"></p></td></tr>
+                    </table>
+                    <!--<button class="sign_out_btn" id="signout" onclick="signout()" style="position: relative; top: 21px; left: 5px">Sign Out</button>
+                    <input type="image" src="settings-icon-transparent-29.png" class="">-->
+                    <div class="dropdown">
+                        <button onclick="myFunction()" class="dropbtn">Settings</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <button onclick="changepass()" style="border-radius: 5px;margin-top: 5px;">Change Password</button>
+                            <button onclick="signout()" style="border-radius: 5px;">Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Table-->
+            <div class="tablecontainer">
+                <table id="status_table" class="table">
+                    <tr class="head" style="border-width: medium;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <td class="element" style="width: 30%;font-weight: bold;padding-left: 110px;border-width: medium;" id="cmpName">
+                            COMPANY NAME
+                        </td>
+                        <td class="element" style="width: 15%;font-weight: bold;padding-left: 55px;border-width: medium;" id="date">
+                            DATE
+                        </td>
+                        <td class="element" style="width: 18%;font-weight: bold;padding-left: 60px;border-width: medium;" id="uprice">
+                            UNIT PRICE
+                        </td>
+                        <td class="element" style="width: 18%;font-weight: bold;padding-left: 60px;border-width: medium;" id="buyqty">
+                            BUY QTY
+                        </td>
+                        <td class="element" style="width: 18%;font-weight: bold;padding-left: 60px;border-width: medium;" id="nprice">
+                            NET PRICE
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--BUY AND SELL-->
+            <div class="buy_sell_pg">
+                <!--<a href="buy.html"><button class="buy_btn_shdw" id="buy"></button></a>
+                <a href="sell_2.html"><button class="sell_btn_shdw" id="sell"></button></a>-->
+                <a href="buy.html"><button class="buy_btn" id="buy">BUY</button></a>
+                <a href="sell_2.html"><button class="sell_btn" id="sell">SELL</button></a>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        //========================================================================
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBq4HoajN_88rmVgbqBfJ3xWgbmc6t4zG4",
+            authDomain: "portfolio-37e60.firebaseapp.com",
+            databaseURL: "https://portfolio-37e60.firebaseio.com",
+            projectId: "portfolio-37e60",
+            storageBucket: "portfolio-37e60.appspot.com",
+            messagingSenderId: "202727189125",
+            appId: "1:202727189125:web:e6c82b94bf7edfe9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        //==========================================================================
+        $(document).ready(function(e) {
+            firebase.auth().onAuthStateChanged(function(user) {
+                console.log("Auth State Changed");                
+                if(user) 
+                {	
+                    var user = firebase.auth().currentUser;                    
+                    if (user != null) {
+                        email = user.email;
+                        emailVerified = user.emailVerified;                    
+                        
+                        var userID = firebase.auth().currentUser.uid;
+                        console.log(userID);
+                        var rootref =firebase.database().ref("users").child(userID);
+                        
+                        rootref.once("value").then(function(snapshot){
+                            var name = snapshot.child("name").val();
+                            var mail = snapshot.child("email").val();
+                            console.log(name);
+                            $('#user_details').append(name+"\n");
+                            $('#user_details_mail').append(mail);
+
+                        });
+                        var stocksref =firebase.database().ref("users").child(userID).child("stocks");
+                        stocksref.once("value").then(function(stockssnapshot){
+                            var cmplist=stockssnapshot.child("cmplist").child("cmplist").val();
+                            var cmpny=cmplist.toString();
+                            var cmpnny =cmpny.split(",");
+                            //console.log(cmpnny);
+                            var table=document.getElementById("status_table");
+                            var i=0;
+                            var row_count=parseInt(1);
+                            var rowno=parseInt(1);
+                            while(i<cmpnny.length)
+                            {
+                                var currcmpny = cmpnny[i];
+                               // console.log(currcmpny);
+                                var datelisto = stockssnapshot.child(cmpnny[i]).child("datelist").child("datelist").val();
+                               // console.log(datelisto);
+                                var datelista = datelisto.split(",");
+                                //console.log(datelista);
+                                var datelists = datelista.sort();
+                               // console.log(datelists);
+                                var j=1;
+                                while(j<datelists.length)
+                                    {
+                                        var row=table.insertRow(row_count);
+                                        rowno++;
+                                        var cell_count=parseInt(0);                                        
+                                        var dnode=stockssnapshot.child(cmpnny[i]).child(datelists[j]);                            
+                                        var netprice = stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Investment Price").val();
+                                        var buyqty =stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Quantity").val();
+                                        var unitprice=stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Unit Price").val();
+                                        //console.log("date"+datelists[j]+"\nnetprice:"+netprice + "\nbuyqty:"+buyqty+"\nunit price:"+unitprice);   
+                                        var cell1=row.insertCell(cell_count);
+                                        var cell2=row.insertCell(cell_count+1);
+                                        var cell3=row.insertCell(cell_count+2);
+                                        var cell4=row.insertCell(cell_count+3);
+                                        var cell5=row.insertCell(cell_count+4);
+                                        cell1.innerHTML=currcmpny;
+                                        cell2.innerHTML=datelists[j];
+                                        cell3.innerHTML=unitprice;
+                                        cell4.innerHTML=buyqty;
+                                        cell5.innerHTML=netprice;                                        
+                                        j++; 
+                                        //console.log('j:'+j);
+                                    }
+                                i++;
+                                row_count++;
+                               // console.log('i:'+i);
+                            }   
+                           // console.log('no.of rows'+rowno);   
+                            refreshtable(rowno);
+                            //refreshtable(rowno);
+                        });  
+                                                                        
+                        // The user's ID, unique to the Firebase project. Do NOT use
+                        // this value to authenticate with your backend server, if
+                        // you have one. Use User.getToken() instead.
+
+                        //$('#user_details').append(email);
+                    }
+                }
+                else 
+                {
+                   console.log("user is null"); 
+                   window.alert("Login First");
+                   window.open("login.html","_self");
+                }
+            });
+            
+            
+            
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                // Existing and future Auth states are now persisted in the current
+                // session only. Closing the window would clear any existing state even
+                // if a user forgets to sign out.
+                // ...
+                // New sign-in will be persisted with session persistence.
+                //window.open("file:///C:/Users/Swapnil%20Athavale/Desktop/portfolio/login.html","_self");
+                return firebase.auth().signInWithEmailAndPassword(email, password);
+            })
+            .catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+        });
+
+        function signout(){
+            //console.log("in sign out fun");
+            firebase.auth().signOut();
+            window.open("login.html","_self");
+        };
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function changepass(){
+            window.open("reset_password.html","_self")
+        }
+
+        function refreshtable(rowno){
+            firebase.auth().onAuthStateChanged(function(user) {
+                //console.log("Auth State Changed");                
+                if(user){	
+                    var user = firebase.auth().currentUser;                    
+                    if (user != null) {
+                        var userID = firebase.auth().currentUser.uid;
+                        //console.log(userID);
+                        var stocksref =firebase.database().ref("users").child(userID).child("stocks");
+                        stocksref.once("value").then(function(stockssnapshot){
+                            var cmplist=stockssnapshot.child("cmplist").child("cmplist").val();
+                            var cmpny=cmplist.toString();
+                            var cmpnny =cmpny.split(",");
+                            //console.log(cmpnny);
+                            var table=document.getElementById("status_table");
+                            var i=0;
+                            var row_count=parseInt(1);
+                            removerows(rowno);
+                            rowno=parseInt(1);
+                            while(i<cmpnny.length)
+                            {
+                                var currcmpny = cmpnny[i];
+                                //console.log(currcmpny);
+                                var datelisto = stockssnapshot.child(cmpnny[i]).child("datelist").child("datelist").val();
+                                //console.log(datelisto);
+                                var datelista = datelisto.split(",");
+                                //console.log(datelista);
+                                var datelists = datelista.sort();
+                                //console.log(datelists);
+                                var j=1;
+                                while(j<datelists.length)
+                                    {
+                                        var row=table.insertRow(row_count);
+                                        rowno++;
+                                        var cell_count=parseInt(0);                                        
+                                        var dnode=stockssnapshot.child(cmpnny[i]).child(datelists[j]);                            
+                                        var netprice = stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Investment Price").val();
+                                        var buyqty =stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Quantity").val();
+                                        var unitprice=stockssnapshot.child(cmpnny[i]).child(datelists[j]).child("Unit Price").val();
+                                        //console.log("date"+datelists[j]+"\nnetprice:"+netprice + "\nbuyqty:"+buyqty+"\nunit price:"+unitprice);   
+                                        var cell1=row.insertCell(cell_count);
+                                        var cell2=row.insertCell(cell_count+1);
+                                        var cell3=row.insertCell(cell_count+2);
+                                        var cell4=row.insertCell(cell_count+3);
+                                        var cell5=row.insertCell(cell_count+4);
+                                        cell1.innerHTML=currcmpny;
+                                        cell2.innerHTML=datelists[j];
+                                        cell3.innerHTML=unitprice;
+                                        cell4.innerHTML=buyqty;
+                                        cell5.innerHTML=netprice;                                        
+                                        j++; 
+                                        //console.log(j);
+                                    }
+                                i++;
+                                row_count++;
+                                //console.log(i);
+                            } 
+                            //console.log('no of rows'+rowno)
+                            setTimeout(refreshtable(rowno), 10000);     
+                        });
+                        
+                        
+                    }
+                }
+            });
+        }
+
+        function removerows(rowno){
+            console.log()
+            var table=document.getElementById("status_table");
+            for(var i=0;i<rowno-1;i++){
+                table.deleteRow(1);
+                //console.log('row'+i+'deleted');
+            }
+            //console.log('rows deleted');
+
+        }
+    </script>
+</html>

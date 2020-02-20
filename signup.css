@@ -1,0 +1,88 @@
+.outer{
+    background-image: url("signup_bg.jpg");
+    background-size: cover; 
+    background-position: center;
+    height: 100vh;
+}
+
+.login-page{
+    width: 360px;
+    padding: 60px 0 0;
+    margin: auto;
+}
+
+.form{
+    position: relative;
+    z-index: 1;
+    background: #ff7300;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 38px;
+    text-align: center;
+    border-radius:8px; 
+}
+
+.form-group input{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    outline: 1;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    margin: 0 0 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.email_login{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background-image: linear-gradient(to bottom, #00ffdd, #006eff, #0400ff);
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.form .message{
+    color: aliceblue;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.google-button {
+height: 40px;
+border-width: 0;
+background: white;
+color: #737373;
+border-radius: 5px;
+white-space: nowrap;
+box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+transition-property: background-color, box-shadow;
+transition-duration: 150ms;
+transition-timing-function: ease-in-out;
+padding: 10; 
+}
+  
+.google-button__icon {
+display: inline-block;
+vertical-align: middle;
+margin: 8px 0 8px 8px;
+width: 18px;
+height: 18px;
+box-sizing: border-box;
+}
+
+.google-button__text {
+display: inline-block;
+vertical-align: middle;
+color: #000000;
+font-size: 14px;
+font-weight: bold;
+font-family: 'Roboto',arial,sans-serif;
+}
